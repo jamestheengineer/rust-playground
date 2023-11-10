@@ -42,10 +42,30 @@ fn main() {
     // moves its return value into s3
     println!("s1 = {}, s3 = {}", s1, s3);
 
+    // References
+    let s1 = String::from("hello");
+
+    let len = calculate_length(&s1);
+
+    println!("The length of '{}' is {}.", s1, len);
+
+    let mut s = String::from("hello");
+
+    change(&mut s);
+
+    println!("The changed string is '{}' ", s);
+
 } // Here, x goes out of scope, then s. But because s's value was moved, nothing
   // special happens.
   // Here, s3 goes out of scope and is dropped. s2 was moved, so nothing
   // happens. s1 goes out of scope and is dropped.
+
+fn change(some_string: &mut String) {
+    some_string.push_str(", world");
+}
+fn calculate_length(s: &String) -> usize {
+    s.len()
+}
 
 fn takes_ownership(some_string: String) { // some_string comes into scope
     println!("{}", some_string);
