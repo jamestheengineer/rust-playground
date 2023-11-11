@@ -62,12 +62,42 @@ fn main() {
     let world = &s[6..11];
     println!("The changed string is {} '{}' '{}' ", s, world, hello);
 
+    let my_string = String::from("hello world");
 
+    // `first_word` works on slices of `String`s, whether partial or whole
+    let _word = first_word(&my_string[0..6]);
+    let _word = first_word(&my_string[..]);
+    // `first_word` also works on references to `String`s, which are equivalent
+    // to whole slices of `String`s
+    let _word = first_word(&my_string);
+
+    let my_string_literal = "hello world";
+
+    // `first_word` works on slices of string literals, whether partial or whole
+    let _word = first_word(&my_string_literal[0..6]);
+    let word = first_word(&my_string_literal[..]);
+
+    // Because string literals *are* string slices already,
+    // this works too, without the slice syntax!
+    let _word = first_word(my_string_literal);
+
+    println!("The changed string is {} '{}' '{}' ", word, my_string_literal, my_string);
 
 } // Here, x goes out of scope, then s. But because s's value was moved, nothing
   // special happens.
   // Here, s3 goes out of scope and is dropped. s2 was moved, so nothing
   // happens. s1 goes out of scope and is dropped.
+fn first_word(s: &str) -> &str {
+    let bytes = s.as_bytes();
+
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[0..i];
+        }
+    }
+
+    &s[..]
+}
 
 fn change(some_string: &mut String) {
     some_string.push_str(", world");
