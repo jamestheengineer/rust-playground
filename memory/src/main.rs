@@ -55,6 +55,15 @@ fn main() {
 
     println!("The changed string is '{}' ", s);
 
+
+    let s = String::from("hello world");
+
+    let hello = &s[0..5];
+    let world = &s[6..11];
+    println!("The changed string is {} '{}' '{}' ", s, world, hello);
+
+
+
 } // Here, x goes out of scope, then s. But because s's value was moved, nothing
   // special happens.
   // Here, s3 goes out of scope and is dropped. s2 was moved, so nothing
