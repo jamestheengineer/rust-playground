@@ -7,6 +7,11 @@ fn main() {
     };
 
     user1.email = String::from("anotheremail@example.com");
+
+    let user2 = User {
+        email: String::from("another@example.com"),
+        ..user1
+    };
 }
 
 struct User {
@@ -19,8 +24,8 @@ struct User {
 fn build_user(email: String, username: String) -> User {
     User {
         active: true,
-        username: username,
-        email: email,
+        username,
+        email,
         sign_in_count: 1,
     }
 }
