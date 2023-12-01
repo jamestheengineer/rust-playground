@@ -24,6 +24,21 @@ fn main() {
         other => move_player(other),
     }
 
+    let config_max = Some(3u8);
+    match config_max {
+        Some(max) => println!("The maximum is configured to be {}", max),
+        _ => (),
+    }
+
+    // Better to do this
+    let config_max = Some(3u8);
+    match config_max {
+        Some(max) => println!("The maximum is configured to be {}", max),
+        _ => (),
+    }
+
+
+
 }
 
 fn add_fancy_hat() {}
