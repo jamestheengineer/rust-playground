@@ -108,6 +108,13 @@
     let s3 = String::from("toe");
     let s = format!("{s1}-{s2}-{s3}"); // s1 is not gone when using format!
 
+    for c in "Зд".chars() {
+        println!("{c}");
+    }
+    for b in "Зд".bytes() {
+        println!("{b}");
+    }
+
 
 
 }
