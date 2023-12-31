@@ -23,7 +23,14 @@ fn main() {
 
     let integer = Point { x: 5, y: 10 };
     let float = Point { x: 1.0, y: 4.0 };
-}
+
+    let x = 5;              // ----------+-- 'b
+                            //           |
+    let r = &x;             // --+-- 'a  |
+                            //   |       |
+    println!("r: {}", r);   //   |       |
+                            // --+       |
+}                           // ----------+
 
 fn largest<T: std::cmp::PartialOrd>(list: &[T]) -> &T {
     let mut largest = &list[0];
