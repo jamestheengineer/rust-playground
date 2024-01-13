@@ -80,10 +80,19 @@ mod tests {
         let value = prints_and_returns_10(8);
         assert_eq!(5, value);
     }
+
+    #[test]
+    fn internal() {
+        assert_eq!(4, internal_adder(2, 2));
+    }
 }
 
 pub fn add_two(a: i32) -> i32 {
-    a + 2
+    internal_adder(a, 2)
+}
+
+fn internal_adder(a: i32, b: i32) -> i32 {
+    a + b
 }
 
 #[derive(Debug)]
