@@ -76,12 +76,6 @@ mod tests {
     }
 
     #[test]
-    fn this_test_will_fail() {
-        let value = prints_and_returns_10(8);
-        assert_eq!(5, value);
-    }
-
-    #[test]
     fn internal() {
         assert_eq!(4, internal_adder(2, 2));
     }
