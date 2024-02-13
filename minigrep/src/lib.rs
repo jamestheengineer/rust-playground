@@ -68,8 +68,6 @@ pub fn search_case_insensitive<'a>(
         .collect()
 }
 
-
-
 #[cfg(test)]
 mod tests {
     use super::*;
