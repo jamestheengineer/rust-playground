@@ -1,3 +1,8 @@
+//! # My Crate
+//!
+//! `my_crate` is a collection of utilities to make performing certain
+//! calculations more convenient.
+
 mod front_of_house;
 use crate::front_of_house::hosting;
 pub fn eat_at_restaurant() {
