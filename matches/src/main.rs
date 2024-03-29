@@ -119,6 +119,13 @@ fn main() {
         _ => (),
     }
 
+    let ((feet, inches), Point { x, y }) = ((3, 10), Point { x: 3, y: -10 });
+
+    let b = (8, 17);
+    let c = Point {x: 5, y: 4 };
+    let ((feet, inches), Point { x, y }) = (b, c);
+    println!("{feet}, {inches}, {x}, {y}");
+
 
 }
 
