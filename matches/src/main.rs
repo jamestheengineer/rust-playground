@@ -126,7 +126,29 @@ fn main() {
     let ((feet, inches), Point { x, y }) = (b, c);
     println!("{feet}, {inches}, {x}, {y}");
 
+    foo(3, 4);
 
+    let mut setting_value = Some(5);
+    let new_setting_value = None;
+
+    match (setting_value, new_setting_value) {
+        (Some(_), Some(_)) => {
+            println!("Can't overwrite an existing customized value");
+        }
+        _ => {
+            if new_setting_value == None {
+                println!("setting has been reset to None");
+            }
+            setting_value = new_setting_value;
+        }
+    }
+
+    println!("setting is {:?}", setting_value);
+
+}
+
+fn foo(_: i32, y: i32) {
+    println!("This code only uses the y parameter: {}", y);
 }
 
 struct Point {
