@@ -176,6 +176,38 @@ fn main() {
         }
     }
 
+    let num = Some(4);
+
+    match num {
+        Some(x) if x % 2 == 0 => println!("The number {} is even", x),
+        Some(x) => println!("The number {} is odd", x),
+        None => ()
+    }
+
+    let x = 4;
+    let y = false;
+
+    match x {
+        4 | 5 | 6 if y => println!("yes"),
+        _ => println!("no"),
+    }
+
+    enum Message2 {
+        Hello { id: i32 },
+    }
+
+    let msg = Message2::Hello { id: 515};
+
+    match msg {
+        Message2::Hello {
+            id: id_variable @ 3..=7,
+        } => println!("Found an id in range: {}", id_variable),
+        Message2::Hello { id: 10..=12 } => {
+            println!("Found an id in another range")
+        }
+        Message2::Hello { id } => println!("Found some other id: {}", id),
+    }
+
 }
 
 fn foo(_: i32, y: i32) {
