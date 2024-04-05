@@ -9,4 +9,10 @@ fn main() {
         println!("r2 is: {}", *r2);
     }
 
+    unsafe fn dangerous() {}
+
+    unsafe {
+        dangerous();
+    }
+
 }
