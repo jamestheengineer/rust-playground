@@ -24,6 +24,10 @@ fn main() {
     assert_eq!(a, &mut [1, 2, 3]);
     assert_eq!(b, &mut [4, 5, 6]);
 
+    let mut a: [i32; 5] = [1, 2, 3, 4, 5];
+    let (c, d) = split_at_mut(&mut a, 2);
+    println!("c is: {:?}", c);
+    println!("c is: {:?}", d);
 
 }
 
