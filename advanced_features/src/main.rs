@@ -39,6 +39,31 @@ fn main() {
         println!("Absolute value of -3 according to C: {}", abs(-3));
     }
 
+    println!("name is: {}", HELLO_WORLD);
+
+    add_to_count(3);
+
+    unsafe {
+        println!("COUNTER: {}", COUNTER);
+    }
+
+}
+
+unsafe trait Foo {
+    // methods go here
+}
+
+unsafe impl Foo for i32 {
+    // method implementations go here
+}
+
+static HELLO_WORLD: &str = "Hello, world!";
+static mut COUNTER: u32 = 0;
+
+fn add_to_count(inc: u32) {
+    unsafe {
+        COUNTER += inc;
+    }
 }
 
 #[no_mangle]
