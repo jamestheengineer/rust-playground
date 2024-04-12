@@ -52,9 +52,38 @@ fn main() {
         Point { x: 3, y: 3 }
     );
 
+    let length_mm = Millimeters(500.0);
+    let length_m = Meters(2.0);
+    let total_length_mm = length_mm + length_m;
+    let length_mm = Millimeters(500.0);
+    let length_m = Meters(2.0);
+    let total_length_m = length_m + length_mm;
+    println!("Total length in mm is {:?} mm", total_length_mm);
+    println!("Total length in m is {:?} m", total_length_m);
+
 }
 
 use std::ops::Add;
+#[derive(Debug)]
+struct Millimeters(f64);
+#[derive(Debug)]
+struct Meters(f64);
+
+impl Add<Meters> for Millimeters {
+    type Output = Millimeters;
+
+    fn add(self, other: Meters) -> Millimeters {
+        Millimeters(self.0 + (other.0 * 1000.0))
+    }
+}
+
+impl Add<Millimeters> for Meters {
+    type Output = Meters;
+
+    fn add(self, other: Millimeters) -> Meters {
+        Meters(self.0 + (other.0 / 1000.0))
+    }
+}
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 struct Point {
