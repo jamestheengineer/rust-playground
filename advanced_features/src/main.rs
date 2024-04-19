@@ -79,8 +79,19 @@ fn main() {
 
     println!("x + y = {}", x + y);
 
+    let answer = do_twice(add_one, 5);
+
+    println!("The answer is: {}", answer);
+
 }
 
+fn add_one(x: i32) -> i32 {
+    x + 1
+}
+
+fn do_twice(f: fn(i32) -> i32, arg: i32) -> i32 {
+    f(arg) + f(arg)
+}
 use std::fmt;
 
 type Result<T> = std::result::Result<T, std::io::Error>;
