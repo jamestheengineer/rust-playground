@@ -83,6 +83,9 @@ fn main() {
 
     println!("The answer is: {}", answer);
 
+    let _v: Vec<u32> = vec![1, 2, 3];
+
+
 }
 
 fn add_one(x: i32) -> i32 {
