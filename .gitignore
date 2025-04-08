@@ -14,3 +14,7 @@ target/
 *.pdb
 
 *.exe
+
+
+.DS_Store
+.wr.toml
