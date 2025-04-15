@@ -1,11 +1,17 @@
-const THREE_HOURS_IN_SECONDS: u32 = 60 * 60 * 3;
-
 fn main() {
-    // let x = 5; // Immutable
-    let mut x = 5;
-    println!("The value of x is: {x}");
-    x = 6;
-    println!("The value of x is: {x}");
+    // addition
+    let sum = 5 + 10;
 
-    println!("The value of the constant is {}", THREE_HOURS_IN_SECONDS);
+    // subtraction
+    let difference = 95.5 - 4.3;
+
+    // multiplication
+    let product = 4 * 30;
+
+    // division
+    let quotient = 56.7 / 32.2;
+    let truncated = -5 / 3; // Results in -1
+
+    // remainder
+    let remainder = 43 % 5;
 }
