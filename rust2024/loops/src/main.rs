@@ -1,80 +1,93 @@
-use std::fmt;
-
-// Define an enum to represent the temperature units clearly.
-// Added derive attributes for easier debugging, comparison, and copying.
-#[derive(Debug, PartialEq, Copy, Clone)]
-enum TemperatureUnit {
-    Celsius,
-    Fahrenheit,
-}
-
-// Implement the Display trait for the enum to print units nicely (e.g., "°C").
-impl fmt::Display for TemperatureUnit {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            TemperatureUnit::Celsius => write!(f, "°C"),
-            TemperatureUnit::Fahrenheit => write!(f, "°F"),
-        }
+/// Calculates the nth Fibonacci number iteratively.
+///
+/// The Fibonacci sequence starts 0, 1, 1, 2, 3, 5, ...
+/// F(0) = 0
+/// F(1) = 1
+/// F(n) = F(n-1) + F(n-2) for n > 1
+///
+/// # Arguments
+///
+/// * `n` - The index (0-based) of the Fibonacci number to calculate.
+///         Must be non-negative.
+///
+/// # Returns
+///
+/// The nth Fibonacci number as a u64.
+///
+/// # Panics
+///
+/// This function will panic if the calculated Fibonacci number exceeds
+/// the maximum value representable by u64 (which happens around n=94).
+/// For larger numbers, you would need a BigInt library.
+///
+fn fibonacci(n: u32) -> u64 {
+    // Handle the base cases F(0) and F(1)
+    if n == 0 {
+        return 0;
+    } else if n == 1 {
+        return 1;
     }
-}
 
-// Single function to convert temperature.
-// Takes a value and its unit, returns the converted value and the new unit.
-fn convert_temperature(value: f64, unit: TemperatureUnit) -> (f64, TemperatureUnit) {
-    match unit {
-        TemperatureUnit::Celsius => {
-            // Convert Celsius to Fahrenheit: F = C * 9/5 + 32
-            // Use floating point numbers (e.g., 9.0) for calculation.
-            let fahrenheit = value * (9.0 / 5.0) + 32.0;
-            (fahrenheit, TemperatureUnit::Fahrenheit) // Return converted value and new unit
-        }
-        TemperatureUnit::Fahrenheit => {
-            // Convert Fahrenheit to Celsius: C = (F - 32) * 5/9
-            let celsius = (value - 32.0) * (5.0 / 9.0);
-            (celsius, TemperatureUnit::Celsius) // Return converted value and new unit
-        }
+    // Initialize the first two numbers in the sequence
+    let mut a: u64 = 0;
+    let mut b: u64 = 1;
+
+    // Iterate from 2 up to n, calculating each next Fibonacci number
+    // The loop runs n-1 times (e.g., for n=2, it runs once; for n=3, twice)
+    for _ in 2..=n {
+        // Calculate the next number, handling potential overflow
+        // Using checked_add would be safer for production code:
+        // let next_b = a.checked_add(b).expect("Fibonacci number overflowed u64");
+        // For simplicity here, we'll let it panic on overflow in debug builds
+        // or wrap around in release builds without explicit checks.
+        let next_b = a + b;
+
+        // Update the previous two numbers for the next iteration
+        a = b;
+        b = next_b;
     }
+
+    // After the loop, 'b' holds the nth Fibonacci number
+    b
 }
 
 fn main() {
-    println!("--- Temperature Conversion Examples ---");
+    println!("Calculating Fibonacci numbers:");
 
-    // --- Example 1: Celsius to Fahrenheit ---
-    let temp_c1 = 0.0; // Freezing point in Celsius
-    let unit_c1 = TemperatureUnit::Celsius;
-    // Call the conversion function
-    let (converted_value1, converted_unit1) = convert_temperature(temp_c1, unit_c1);
-    // Print the result using the Display impl for the unit
-    println!("{} {} is {:.2} {}", temp_c1, unit_c1, converted_value1, converted_unit1);
+    // --- Example 1: The 0th Fibonacci number ---
+    let n0 = 0;
+    let fib0 = fibonacci(n0);
+    println!("Fibonacci({}) = {}", n0, fib0); // Expected: 0
 
-    // --- Example 2: Celsius to Fahrenheit ---
-    let temp_c2 = 100.0; // Boiling point in Celsius
-    let unit_c2 = TemperatureUnit::Celsius;
-    let (converted_value2, converted_unit2) = convert_temperature(temp_c2, unit_c2);
-    println!("{} {} is {:.2} {}", temp_c2, unit_c2, converted_value2, converted_unit2);
+    // --- Example 2: The 1st Fibonacci number ---
+    let n1 = 1;
+    let fib1 = fibonacci(n1);
+    println!("Fibonacci({}) = {}", n1, fib1); // Expected: 1
 
-    // --- Example 3: Fahrenheit to Celsius ---
-    let temp_f1 = 32.0; // Freezing point in Fahrenheit
-    let unit_f1 = TemperatureUnit::Fahrenheit;
-    let (converted_value3, converted_unit3) = convert_temperature(temp_f1, unit_f1);
-    println!("{} {} is {:.2} {}", temp_f1, unit_f1, converted_value3, converted_unit3);
+    // --- Example 3: The 2nd Fibonacci number ---
+    let n2 = 2;
+    let fib2 = fibonacci(n2);
+    println!("Fibonacci({}) = {}", n2, fib2); // Expected: 1
 
-    // --- Example 4: Fahrenheit to Celsius ---
-    let temp_f2 = 212.0; // Boiling point in Fahrenheit
-    let unit_f2 = TemperatureUnit::Fahrenheit;
-    let (converted_value4, converted_unit4) = convert_temperature(temp_f2, unit_f2);
-    println!("{} {} is {:.2} {}", temp_f2, unit_f2, converted_value4, converted_unit4);
+    // --- Example 4: The 10th Fibonacci number ---
+    let n10 = 10;
+    let fib10 = fibonacci(n10);
+    println!("Fibonacci({}) = {}", n10, fib10); // Expected: 55
 
-     // --- Example 5: Fahrenheit to Celsius ---
-    let temp_f3 = 68.0; // A common room temperature
-    let unit_f3 = TemperatureUnit::Fahrenheit;
-    let (converted_value5, converted_unit5) = convert_temperature(temp_f3, unit_f3);
-    println!("{} {} is {:.2} {}", temp_f3, unit_f3, converted_value5, converted_unit5);
+    // --- Example 5: The 20th Fibonacci number ---
+    let n20 = 20;
+    let fib20 = fibonacci(n20);
+    println!("Fibonacci({}) = {}", n20, fib20); // Expected: 6765
 
-     // --- Example 6: Celsius to Fahrenheit ---
-    let temp_c3 = 20.0; // A common room temperature
-    let unit_c3 = TemperatureUnit::Celsius;
-    let (converted_value6, converted_unit6) = convert_temperature(temp_c3, unit_c3);
-    println!("{} {} is {:.2} {}", temp_c3, unit_c3, converted_value6, converted_unit6);
+    // --- Example 6: A larger Fibonacci number ---
+    // Be aware that u64 will overflow around n=94
+    let n45 = 45;
+    let fib45 = fibonacci(n45);
+    println!("Fibonacci({}) = {}", n45, fib45); // Expected: 1134903170
 
+    // --- Example 7: Using a loop ---
+    println!("\nFirst 15 Fibonacci numbers:");
+    for i in 0..15 {
+        println!("F({}) = {}", i, fibonacci(i));
+    }
 }
