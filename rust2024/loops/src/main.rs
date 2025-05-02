@@ -1,93 +1,69 @@
-/// Calculates the nth Fibonacci number iteratively.
-///
-/// The Fibonacci sequence starts 0, 1, 1, 2, 3, 5, ...
-/// F(0) = 0
-/// F(1) = 1
-/// F(n) = F(n-1) + F(n-2) for n > 1
-///
-/// # Arguments
-///
-/// * `n` - The index (0-based) of the Fibonacci number to calculate.
-///         Must be non-negative.
-///
-/// # Returns
-///
-/// The nth Fibonacci number as a u64.
-///
-/// # Panics
-///
-/// This function will panic if the calculated Fibonacci number exceeds
-/// the maximum value representable by u64 (which happens around n=94).
-/// For larger numbers, you would need a BigInt library.
-///
-fn fibonacci(n: u32) -> u64 {
-    // Handle the base cases F(0) and F(1)
-    if n == 0 {
-        return 0;
-    } else if n == 1 {
-        return 1;
+/// Prints the lyrics to "The Twelve Days of Christmas".
+/// It utilizes the repetitive and cumulative nature of the song.
+fn print_twelve_days_of_christmas() {
+    // Array holding the ordinal names for the days (1st to 12th)
+    let days = [
+        "first", "second", "third", "fourth", "fifth", "sixth",
+        "seventh", "eighth", "ninth", "tenth", "eleventh", "twelfth"
+    ];
+
+    // Array holding the gift descriptions for each day
+    // Index 0 corresponds to the first day's gift, etc.
+    let gifts = [
+        "A partridge in a pear tree", // Special handling for the first day / "And"
+        "Two turtle doves",
+        "Three French hens",
+        "Four calling birds",
+        "Five golden rings",
+        "Six geese a-laying",
+        "Seven swans a-swimming",
+        "Eight maids a-milking",
+        "Nine ladies dancing",
+        "Ten lords a-leaping",
+        "Eleven pipers piping",
+        "Twelve drummers drumming"
+    ];
+
+    // Loop through each day, from 1 to 12
+    // (day_num represents the actual day number, 1-indexed)
+    for day_num in 1..=12 {
+        // Print the introductory line for the verse
+        // Access the 'days' array using 0-based index (day_num - 1)
+        println!("On the {} day of Christmas,", days[day_num - 1]);
+        println!("My true love gave to me");
+
+        // Loop *backwards* from the current day down to the first day
+        // to print the cumulative list of gifts for that verse.
+        // (gift_day_num represents the day associated with the gift being printed)
+        for gift_day_num in (1..=day_num).rev() {
+            // Get the 0-based index for the 'gifts' array
+            let gift_index = gift_day_num - 1;
+
+            // Handle the special case for the first gift ("A partridge...")
+            if gift_day_num == 1 { // Is this the first day's gift line?
+                if day_num == 1 { // Is it the *very first* verse?
+                    // On the first day, just print the gift with a period.
+                    println!("{}.", gifts[gift_index]);
+                } else {
+                    // On subsequent days, prepend "And" and add a period.
+                    println!("And {}.", gifts[gift_index].to_lowercase()); // Often sung lowercase here
+                }
+            } else {
+                // For all other gifts, print them with a comma.
+                println!("{},", gifts[gift_index]);
+            }
+        }
+
+        // Print a blank line for separation between verses
+        println!();
     }
-
-    // Initialize the first two numbers in the sequence
-    let mut a: u64 = 0;
-    let mut b: u64 = 1;
-
-    // Iterate from 2 up to n, calculating each next Fibonacci number
-    // The loop runs n-1 times (e.g., for n=2, it runs once; for n=3, twice)
-    for _ in 2..=n {
-        // Calculate the next number, handling potential overflow
-        // Using checked_add would be safer for production code:
-        // let next_b = a.checked_add(b).expect("Fibonacci number overflowed u64");
-        // For simplicity here, we'll let it panic on overflow in debug builds
-        // or wrap around in release builds without explicit checks.
-        let next_b = a + b;
-
-        // Update the previous two numbers for the next iteration
-        a = b;
-        b = next_b;
-    }
-
-    // After the loop, 'b' holds the nth Fibonacci number
-    b
 }
 
+// Main function to execute the program
 fn main() {
-    println!("Calculating Fibonacci numbers:");
+    println!("--- The Twelve Days of Christmas ---");
+    println!(); // Add a space before starting the lyrics
 
-    // --- Example 1: The 0th Fibonacci number ---
-    let n0 = 0;
-    let fib0 = fibonacci(n0);
-    println!("Fibonacci({}) = {}", n0, fib0); // Expected: 0
-
-    // --- Example 2: The 1st Fibonacci number ---
-    let n1 = 1;
-    let fib1 = fibonacci(n1);
-    println!("Fibonacci({}) = {}", n1, fib1); // Expected: 1
-
-    // --- Example 3: The 2nd Fibonacci number ---
-    let n2 = 2;
-    let fib2 = fibonacci(n2);
-    println!("Fibonacci({}) = {}", n2, fib2); // Expected: 1
-
-    // --- Example 4: The 10th Fibonacci number ---
-    let n10 = 10;
-    let fib10 = fibonacci(n10);
-    println!("Fibonacci({}) = {}", n10, fib10); // Expected: 55
-
-    // --- Example 5: The 20th Fibonacci number ---
-    let n20 = 20;
-    let fib20 = fibonacci(n20);
-    println!("Fibonacci({}) = {}", n20, fib20); // Expected: 6765
-
-    // --- Example 6: A larger Fibonacci number ---
-    // Be aware that u64 will overflow around n=94
-    let n45 = 45;
-    let fib45 = fibonacci(n45);
-    println!("Fibonacci({}) = {}", n45, fib45); // Expected: 1134903170
-
-    // --- Example 7: Using a loop ---
-    println!("\nFirst 15 Fibonacci numbers:");
-    for i in 0..15 {
-        println!("F({}) = {}", i, fibonacci(i));
-    }
+    // Call the function to print the lyrics
+    print_twelve_days_of_christmas();
 }
