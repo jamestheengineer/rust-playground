@@ -19,6 +19,10 @@ fn main() {
     let some_char = Some('e');
 
     let absent_number: Option<i32> = None;
+
+    let coin = Coin::Penny;
+    let value = value_in_cents(coin);
+    println!("The value of the coin is {value}");
 }
 
 #[derive(Debug)]
@@ -49,5 +53,21 @@ enum Message {
 impl Message {
     fn call(&self) {
         println!("home is {self:#?}");
+    }
+}
+
+enum Coin {
+    Penny,
+    Nickel,
+    Dime,
+    Quarter,
+}
+
+fn value_in_cents(coin: Coin) -> u8 {
+    match coin {
+        Coin::Penny => 1,
+        Coin::Nickel => 5,
+        Coin::Dime => 10,
+        Coin::Quarter => 25,
     }
 }
