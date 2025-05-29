@@ -20,7 +20,7 @@ fn main() {
 
     let absent_number: Option<i32> = None;
 
-    let coin = Coin::Penny;
+    let coin = Coin::Quarter(UsState::North_Carolina);
     let value = value_in_cents(coin);
     println!("The value of the coin is {value}");
 }
@@ -56,18 +56,31 @@ impl Message {
     }
 }
 
-enum Coin {
-    Penny,
-    Nickel,
-    Dime,
-    Quarter,
-}
+
 
 fn value_in_cents(coin: Coin) -> u8 {
     match coin {
         Coin::Penny => 1,
         Coin::Nickel => 5,
         Coin::Dime => 10,
-        Coin::Quarter => 25,
+        Coin::Quarter(state) => {
+            println!("State quarter from {state:?}!");
+            25
+        }
     }
+}
+
+#[derive(Debug)] // so we can inspect the state in a minute
+enum UsState {
+    Alabama,
+    Alaska,
+    North_Carolina
+    // --snip--
+}
+
+enum Coin {
+    Penny,
+    Nickel,
+    Dime,
+    Quarter(UsState),
 }
