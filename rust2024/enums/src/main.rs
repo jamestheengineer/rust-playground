@@ -27,7 +27,26 @@ fn main() {
     let five = Some(5);
     let six = plus_one(five);
     let none = plus_one(None);
+
+    let dice_roll = 9;
+    match dice_roll {
+        3 => add_fancy_hat(),
+        7 => remove_fancy_hat(),
+        other => move_player(other),
+    }
+
+    let dice_roll = 9;
+    match dice_roll {
+        3 => add_fancy_hat(),
+        7 => remove_fancy_hat(),
+        _ => reroll(),
+    }
 }
+
+fn add_fancy_hat() {}
+fn remove_fancy_hat() {}
+fn move_player(num_spaces: u8) {}
+fn reroll() {}
 
 #[derive(Debug)]
 enum IpAddrKind {
@@ -60,8 +79,6 @@ impl Message {
     }
 }
 
-
-
 fn value_in_cents(coin: Coin) -> u8 {
     match coin {
         Coin::Penny => 1,
@@ -78,8 +95,7 @@ fn value_in_cents(coin: Coin) -> u8 {
 enum UsState {
     Alabama,
     Alaska,
-    North_Carolina
-    // --snip--
+    North_Carolina, // --snip--
 }
 
 enum Coin {
