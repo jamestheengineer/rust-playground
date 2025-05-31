@@ -23,6 +23,10 @@ fn main() {
     let coin = Coin::Quarter(UsState::North_Carolina);
     let value = value_in_cents(coin);
     println!("The value of the coin is {value}");
+
+    let five = Some(5);
+    let six = plus_one(five);
+    let none = plus_one(None);
 }
 
 #[derive(Debug)]
@@ -83,4 +87,11 @@ enum Coin {
     Nickel,
     Dime,
     Quarter(UsState),
+}
+
+fn plus_one(x: Option<i32>) -> Option<i32> {
+    match x {
+        None => None,
+        Some(i) => Some(i + 1),
+    }
 }
