@@ -13,7 +13,8 @@ mod front_of_house {
         fn take_payment() {}
     }
 }
-use crate::front_of_house::hosting;
+// re-export
+pub use crate::front_of_house::hosting;
 
 pub fn eat_at_restaurant() {
     // Absolute path
