@@ -79,3 +79,7 @@ fn function2() -> IoResult<()> {
     // --snip--
     Ok(())
 }
+
+use std::{cmp::Ordering, io};
+use std::collections::*;
+
