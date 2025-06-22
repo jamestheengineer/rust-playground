@@ -75,4 +75,16 @@ fn main() {
     let s3 = String::from("toe");
 
     let s = format!("{s1}-{s2}-{s3}");
+
+    let hello = "Здравствуйте";
+
+    let s = &hello[0..4];
+
+    for c in "Зд".chars() {
+        println!("{c}");
+    }
+
+    for b in "Зд".bytes() {
+        println!("{b}");
+    }
 }
