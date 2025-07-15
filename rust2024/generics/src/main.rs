@@ -1,6 +1,8 @@
 pub trait Summary {
+    fn summarize_author(&self) -> String;
+
     fn summarize(&self) -> String {
-        String::from("(Read more...)")
+        format!("(Read more from {}...)", self.summarize_author())
     }
 }
 
@@ -18,13 +20,12 @@ pub struct SocialPost {
     pub repost: bool,
 }
 
+
 impl Summary for SocialPost {
-    fn summarize(&self) -> String {
-        format!("{}: {}", self.username, self.content)
+    fn summarize_author(&self) -> String {
+        format!("@{}", self.username)
     }
 }
-
-impl Summary for NewsArticle {}
 
 fn main() {
     let post = SocialPost {
@@ -46,5 +47,13 @@ fn main() {
         ),
     };
 
-    println!("New article available! {}", article.summarize());
+
+    let post = SocialPost {
+        username: String::from("horse_ebooks"),
+        content: String::from("of course, as you probably already know, people"),
+        reply: false,
+        repost: false,
+    };
+
+    println!("1 new post: {}", post.summarize());
 }
