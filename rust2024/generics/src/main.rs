@@ -27,6 +27,14 @@ impl Summary for SocialPost {
     }
 }
 
+pub fn notify(item: &impl Summary) {
+    println!("Breaking news! {}", item.summarize());
+}
+
+pub fn notify2<T: Summary>(item: &T) {
+    println!("Breaking news! {}", item.summarize());
+}
+
 fn main() {
     let post = SocialPost {
         username: String::from("horse_ebooks"),
