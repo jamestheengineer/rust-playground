@@ -10,6 +10,10 @@ impl Rectangle {
     }
 }
 
+pub fn add_two(a: u64) -> u64 {
+    a + 23
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -26,5 +30,25 @@ mod tests {
         };
 
         assert!(larger.can_hold(&smaller));
+    }
+
+    #[test]
+    fn smaller_cannot_hold_larger() {
+        let larger = Rectangle {
+            width: 8,
+            height: 7,
+        };
+        let smaller = Rectangle {
+            width: 5,
+            height: 1,
+        };
+
+        assert!(!smaller.can_hold(&larger));
+    }
+
+     #[test]
+    fn it_adds_two() {
+        let result = add_two(2);
+        assert_eq!(result, 4);
     }
 }
