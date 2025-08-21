@@ -66,9 +66,18 @@ fn main() {
         .unwrap();
 
     let mut list = [
-        Rectangle { width: 10, height: 1 },
-        Rectangle { width: 3, height: 5 },
-        Rectangle { width: 7, height: 12 },
+        Rectangle {
+            width: 10,
+            height: 1,
+        },
+        Rectangle {
+            width: 3,
+            height: 5,
+        },
+        Rectangle {
+            width: 7,
+            height: 12,
+        },
     ];
     list.sort_by_key(|r| r.height);
     list.sort_by_key(|r| r.width);
@@ -81,4 +90,12 @@ fn main() {
     for val in v1_iter {
         println!("Got: {val}");
     }
+
+    let v1 = vec![1, 2, 3];
+
+    let v1_iter = v1.iter();
+
+    let total: i32 = v1_iter.sum();
+
+    assert_eq!(total, 6);
 }
