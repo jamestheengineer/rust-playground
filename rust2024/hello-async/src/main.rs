@@ -17,5 +17,13 @@ fn main() {
         };
 
         trpl::join(fut1, fut2).await;
+
+        let (tx, mut rx) = trpl::channel();
+
+        let val = String::from("transport!");
+        tx.send(val).unwrap();
+
+        let received = rx.recv().await.unwrap();
+        println!("received '{received}'");
     });
 }
