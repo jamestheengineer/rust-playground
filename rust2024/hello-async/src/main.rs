@@ -43,5 +43,12 @@ fn main() {
         let futures: Vec<Pin<Box<dyn Future<Output = ()>>>> =
             vec![Box::pin(tx1_fut), Box::pin(rx_fut), Box::pin(tx_fut)];
         trpl::join_all(futures).await;
+
+        let a = async { 1u32 };
+        let b = async { "Hello!" };
+        let c = async { true };
+
+        let (a_result, b_result, c_result) = trpl::join!(a, b, c);
+        println!("{a_result}, {b_result}, {c_result}");
     });
 }
