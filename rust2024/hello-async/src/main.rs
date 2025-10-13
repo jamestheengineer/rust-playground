@@ -1,5 +1,7 @@
 use std::thread;
 use std::time::Duration;
+use std::time::Instant;
+
 fn main() {
     trpl::run(async {
                 let a = async {
@@ -28,6 +30,34 @@ fn main() {
 
 
         trpl::race(a, b).await;
+
+                let one_ns = Duration::from_nanos(1);
+        let start = Instant::now();
+        async {
+            for _ in 1..1000 {
+                trpl::sleep(one_ns).await;
+            }
+        }
+        .await;
+        let time = Instant::now() - start;
+        println!(
+            "'sleep' version finished after {} seconds.",
+            time.as_secs_f32()
+        );
+
+        let start = Instant::now();
+        async {
+            for _ in 1..1000 {
+                trpl::yield_now().await;
+            }
+        }
+        .await;
+        let time = Instant::now() - start;
+        println!(
+            "'yield' version finished after {} seconds.",
+            time.as_secs_f32()
+        );
+
     });
 }
 
