@@ -28,7 +28,7 @@ fn main() {
         println!("{value}");
     }
 
-     let v = vec!['a', 'b', 'c'];
+    let v = vec!['a', 'b', 'c'];
 
     for (index, value) in v.iter().enumerate() {
         println!("{value} is at index {index}");
@@ -36,6 +36,15 @@ fn main() {
 
     let point = (3, 5);
     print_coordinates(&point);
+
+    let x = 1;
+
+    match x {
+        1 => println!("one"),
+        2 => println!("two"),
+        3 => println!("three"),
+        _ => println!("anything"),
+    }
 }
 
 fn print_coordinates(&(x, y): &(i32, i32)) {
