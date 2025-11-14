@@ -107,6 +107,11 @@ fn main() {
         }
         _ => (),
     }
+
+    foo(3, 4);
+}
+fn foo(_: i32, y: i32) {
+    println!("This code only uses the y parameter: {y}");
 }
 
 fn print_coordinates(&(x, y): &(i32, i32)) {
@@ -129,4 +134,3 @@ enum Color {
     Rgb(i32, i32, i32),
     Hsv(i32, i32, i32),
 }
-
