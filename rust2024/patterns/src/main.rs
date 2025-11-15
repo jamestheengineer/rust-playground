@@ -110,7 +110,7 @@ fn main() {
 
     foo(3, 4);
 
-     let mut setting_value = Some(5);
+    let mut setting_value = Some(5);
     let new_setting_value = Some(10);
 
     match (setting_value, new_setting_value) {
@@ -123,6 +123,9 @@ fn main() {
     }
 
     println!("setting is {setting_value:?}");
+
+    let _x = 5;
+    let y = 10;
 }
 fn foo(_: i32, y: i32) {
     println!("This code only uses the y parameter: {y}");
