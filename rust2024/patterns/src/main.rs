@@ -80,22 +80,6 @@ fn main() {
         _ => println!("something else"),
     }
 
-    let p = Point { x: 0, y: 7 };
-
-    let Point { x: a, y: b } = p;
-    assert_eq!(0, a);
-    assert_eq!(7, b);
-
-    let p = Point { x: 0, y: 7 };
-
-    match p {
-        Point { x, y: 0 } => println!("On the x axis at {x}"),
-        Point { x: 0, y } => println!("On the y axis at {y}"),
-        Point { x, y } => {
-            println!("On neither axis: ({x}, {y})");
-        }
-    }
-
     let msg = Message::ChangeColor(Color::Hsv(0, 160, 255));
 
     match msg {
@@ -126,6 +110,12 @@ fn main() {
 
     let _x = 5;
     let y = 10;
+
+    let origin = Point { x: 0, y: 0, z: 0 };
+
+    match origin {
+        Point { x, .. } => println!("x is {x}"),
+    }
 }
 fn foo(_: i32, y: i32) {
     println!("This code only uses the y parameter: {y}");
@@ -138,6 +128,7 @@ fn print_coordinates(&(x, y): &(i32, i32)) {
 struct Point {
     x: i32,
     y: i32,
+    z: i32,
 }
 
 enum Message {
