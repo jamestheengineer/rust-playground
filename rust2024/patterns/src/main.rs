@@ -109,12 +109,22 @@ fn main() {
     println!("setting is {setting_value:?}");
 
     let _x = 5;
-    let y = 10;
+    let _y = 10;
 
     let origin = Point { x: 0, y: 0, z: 0 };
 
     match origin {
         Point { x, .. } => println!("x is {x}"),
+    }
+
+    println!("{} {}", origin.y, origin.z);
+
+    let num = Some(4);
+
+    match num {
+        Some(x) if x % 2 == 0 => println!("The number {x} is even"),
+        Some(x) => println!("The number {x} is odd"),
+        None => (),
     }
 }
 fn foo(_: i32, y: i32) {
