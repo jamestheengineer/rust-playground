@@ -126,6 +126,22 @@ fn main() {
         Some(x) => println!("The number {x} is odd"),
         None => (),
     }
+
+    enum Message1 {
+        Hello { id: i32 },
+    }
+
+    let msg = Message1::Hello { id: 5 };
+
+    match msg {
+        Message1::Hello { id: id @ 3..=7 } => {
+            println!("Found an id in range: {id}")
+        }
+        Message1::Hello { id: 10..=12 } => {
+            println!("Found an id in another range")
+        }
+        Message1::Hello { id } => println!("Found some other id: {id}"),
+    }
 }
 fn foo(_: i32, y: i32) {
     println!("This code only uses the y parameter: {y}");
