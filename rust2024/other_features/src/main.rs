@@ -28,6 +28,8 @@ fn main() {
     assert_eq!(b, &mut [4, 5, 6]);
 
     println!("Absolute value of -3 according to C: {}", abs(-3));
+
+    println!("value is: {HELLO_WORLD}");
 }
 
 use std::slice;
@@ -54,3 +56,6 @@ unsafe extern "C" {
 pub extern "C" fn call_from_c() {
     println!("Just called a Rust function from C!");
 }
+
+static HELLO_WORLD: &str = "Hello, world!";
+
