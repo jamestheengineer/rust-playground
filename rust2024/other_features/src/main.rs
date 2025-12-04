@@ -1,21 +1,13 @@
-use std::fmt;
-
-struct Wrapper(Vec<String>);
-
-impl fmt::Display for Wrapper {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "[{}]", self.0.join(", "))
-    }
+fn add_one(x: i32) -> i32 {
+    x + 1
 }
 
-type Kilometers = i32;
+fn do_twice(f: fn(i32) -> i32, arg: i32) -> i32 {
+    f(arg) + f(arg)
+}
 
 fn main() {
-    let w = Wrapper(vec![String::from("hello"), String::from("world")]);
-    println!("w = {w}");
+    let answer = do_twice(add_one, 5);
 
-    let x: i32 = 5;
-    let y: Kilometers = 5;
-
-    println!("x + y = {}", x + y);
+    println!("The answer is: {answer}");
 }
