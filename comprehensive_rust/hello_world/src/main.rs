@@ -5,6 +5,15 @@ fn main() {
 
     let n = 20;
     println!("fib({n}) = {}", fib(n));
+
+    let z = 13;
+    let x = {
+        let y = 10;
+        dbg!(y);
+        z - y
+    };
+    dbg!(x);
+    // dbg!(y);
 }
 
 fn interproduct(a: i32, b: i32, c: i32) -> i32 {
