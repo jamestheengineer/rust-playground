@@ -1,44 +1,18 @@
 fn main() {
-    println!("Hello 🌍!");
+    let val = 1;
+    match val {
+        1 => println!("one"),
+        10 => println!("ten"),
+        100 => println!("one hundred"),
+        _ => {
+            println!("something else");
+        }
+    }
 
-    println!("result: {}", interproduct(120, 100, 248));
-
-    let n = 20;
-    println!("fib({n}) = {}", fib(n));
-
-    let z = 13;
-    let x = {
-        let y = 10;
-        dbg!(y);
-        z - y
+    let flag = true;
+    let val = match flag {
+        true => 1,
+        false => 0,
     };
-    dbg!(x);
-    // dbg!(y);
-
-    let x = 10;
-    if x == 0 {
-        println!("zero!");
-    } else if x < 100 {
-        println!("biggish");
-    } else {
-        println!("huge");
-    }
-
-    let x = 10;
-    let size = if x < 20 { "small" } else { "large" };
-    println!("number size: {}", size);
-}
-
-fn interproduct(a: i32, b: i32, c: i32) -> i32 {
-    return a * b + b * c + c * a;
-}
-
-fn fib(n: u32) -> u32 {
-    if n == 0 {
-        return 0;
-    } else if n == 1 {
-        return 1;
-    } else {
-        return fib(n - 1) + fib(n - 2);
-    }
+    println!("The value of {flag} is {val}");
 }
