@@ -1,18 +1,36 @@
 fn main() {
-    let val = 1;
-    match val {
-        1 => println!("one"),
-        10 => println!("ten"),
-        100 => println!("one hundred"),
-        _ => {
-            println!("something else");
+    let mut x = 200;
+    while x >= 10 {
+        x = x / 2;
+    }
+    dbg!(x);
+
+    for x in 1..=5 {
+        dbg!(x);
+    }
+
+    for elem in [2, 4, 8, 16, 32] {
+        dbg!(elem);
+    }
+
+    let mut i = 0;
+    loop {
+        i += 1;
+        dbg!(i);
+        if i > 100 {
+            break;
         }
     }
 
-    let flag = true;
-    let val = match flag {
-        true => 1,
-        false => 0,
-    };
-    println!("The value of {flag} is {val}");
+     let mut i = 0;
+    loop {
+        i += 1;
+        if i > 5 {
+            break;
+        }
+        if i % 2 == 0 {
+            continue;
+        }
+        dbg!(i);
+    }
 }
