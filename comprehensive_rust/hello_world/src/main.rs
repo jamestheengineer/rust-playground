@@ -1,29 +1,12 @@
-fn transpose(matrix: [[i32; 3]; 3]) -> [[i32; 3]; 3] {
-    let mut result = [[0; 3]; 3];
-    for i in 0..3 {
-        for j in 0..3 {
-            result[i][j] = matrix[j][i];
-        }
-    }
-    result
-}
-
 fn main() {
-    let matrix = [
-        [101, 102, 103], // <-- the comment makes rustfmt add a newline
-        [201, 202, 203],
-        [301, 302, 303],
-    ];
+    let a = 'A';
+    let b = 'B';
 
-    println!("Original:");
-    for row in &matrix {
-        println!("{:?}", row);
-    }
+    let mut r: &char = &a;
+    dbg!(r);
 
-    let transposed = transpose(matrix);
-
-    println!("\nTransposed:");
-    for row in &transposed {
-        println!("{:?}", row);
-    }
+    r = &b;
+    let is_letter = r.is_ascii();
+    dbg!(is_letter);
+    dbg!(r);
 }
