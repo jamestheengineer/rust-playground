@@ -1,12 +1,6 @@
 fn main() {
-    let a = 'A';
-    let b = 'B';
-
-    let mut r: &char = &a;
-    dbg!(r);
-
-    r = &b;
-    let is_letter = r.is_ascii();
-    dbg!(is_letter);
-    dbg!(r);
+    let mut point = (1, 2);
+    let x_coord = &mut point.0;
+    *x_coord = 20;
+    println!("point: {point:?}");
 }
