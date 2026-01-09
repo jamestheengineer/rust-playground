@@ -1,6 +1,7 @@
 fn main() {
-    let mut point = (1, 2);
-    let x_coord = &mut point.0;
-    *x_coord = 20;
-    println!("point: {point:?}");
+    let a: [i32; 6] = [10, 20, 30, 40, 50, 60];
+    println!("a: {a:?}");
+
+    let s: &[i32] = &a[2..=4];
+    println!("s: {s:?}");
 }
