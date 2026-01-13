@@ -21,4 +21,7 @@ fn main() {
     let age = 39;
     let avery = Person { name, age };
     describe(&avery);
+
+    let jackie = Person { name: String::from("Jackie"), ..avery };
+    describe(&jackie);
 }
