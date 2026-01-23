@@ -1,20 +1,15 @@
-enum Result {
-    Ok(i32),
-    Err(String),
-}
+use std::time::Duration;
 
-fn divide_in_two(n: i32) -> Result {
-    if n % 2 == 0 {
-        Result::Ok(n / 2)
-    } else {
-        Result::Err(format!("cannot divide {n} into two equal parts"))
+fn sleep_for(secs: f32) {
+    let result = Duration::try_from_secs_f32(secs);
+
+    if let Ok(duration) = result {
+        std::thread::sleep(duration);
+        println!("slept for {duration:?}");
     }
 }
 
 fn main() {
-    let n = 100;
-    match divide_in_two(n) {
-        Result::Ok(half) => println!("{n} divided in two is {half}"),
-        Result::Err(msg) => println!("sorry, an error happened: {msg}"),
-    }
+    sleep_for(-10.0);
+    sleep_for(0.8);
 }
