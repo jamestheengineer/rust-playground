@@ -1,117 +1,42 @@
-/// An operation to perform on two subexpressions.
 #[derive(Debug)]
-enum Operation {
-    Add,
-    Sub,
-    Mul,
-    Div,
+struct CarRace {
+    name: String,
+    laps: Vec<i32>,
 }
 
-/// An expression, in tree form.
-#[derive(Debug)]
-enum Expression {
-    /// An operation on two subexpressions.
-    Op { op: Operation, left: Box<Expression>, right: Box<Expression> },
+impl CarRace {
+    // No receiver, a static method
+    fn new(name: &str) -> Self {
+        Self { name: String::from(name), laps: Vec::new() }
+    }
 
-    /// A literal value
-    Value(i64),
-}
+    // Exclusive borrowed read-write access to self
+    fn add_lap(&mut self, lap: i32) {
+        self.laps.push(lap);
+    }
 
-fn eval(e: Expression) -> i64 {
-    match e {
-        Expression::Op { op, left, right } => {
-            let left = eval(*left);
-            let right = eval(*right);
-            match op {
-                Operation::Add => left + right,
-                Operation::Sub => left - right,
-                Operation::Mul => left * right,
-                Operation::Div => left / right,
-            }
+    // Shared and read-only borrowed access to self
+    fn print_laps(&self) {
+        println!("Recorded {} laps for {}:", self.laps.len(), self.name);
+        for (idx, lap) in self.laps.iter().enumerate() {
+            println!("Lap {idx}: {lap} sec");
         }
-        Expression::Value(v) => v,
+    }
+
+    // Exclusive ownership of self (covered later)
+    fn finish(self) {
+        let total: i32 = self.laps.iter().sum();
+        println!("Race {} is finished, total lap time: {}", self.name, total);
     }
 }
 
-#[test]
-fn test_value() {
-    assert_eq!(eval(Expression::Value(19)), 19);
-}
-
-#[test]
-fn test_sum() {
-    assert_eq!(
-        eval(Expression::Op {
-            op: Operation::Add,
-            left: Box::new(Expression::Value(10)),
-            right: Box::new(Expression::Value(20)),
-        }),
-        30
-    );
-}
-
-#[test]
-fn test_recursion() {
-    let term1 = Expression::Op {
-        op: Operation::Mul,
-        left: Box::new(Expression::Value(10)),
-        right: Box::new(Expression::Value(9)),
-    };
-    let term2 = Expression::Op {
-        op: Operation::Mul,
-        left: Box::new(Expression::Op {
-            op: Operation::Sub,
-            left: Box::new(Expression::Value(3)),
-            right: Box::new(Expression::Value(4)),
-        }),
-        right: Box::new(Expression::Value(5)),
-    };
-    assert_eq!(
-        eval(Expression::Op {
-            op: Operation::Add,
-            left: Box::new(term1),
-            right: Box::new(term2),
-        }),
-        85
-    );
-}
-
-#[test]
-fn test_zeros() {
-    assert_eq!(
-        eval(Expression::Op {
-            op: Operation::Add,
-            left: Box::new(Expression::Value(0)),
-            right: Box::new(Expression::Value(0))
-        }),
-        0
-    );
-    assert_eq!(
-        eval(Expression::Op {
-            op: Operation::Mul,
-            left: Box::new(Expression::Value(0)),
-            right: Box::new(Expression::Value(0))
-        }),
-        0
-    );
-    assert_eq!(
-        eval(Expression::Op {
-            op: Operation::Sub,
-            left: Box::new(Expression::Value(0)),
-            right: Box::new(Expression::Value(0))
-        }),
-        0
-    );
-}
-
-#[test]
-fn test_div() {
-    assert_eq!(
-        eval(Expression::Op {
-            op: Operation::Div,
-            left: Box::new(Expression::Value(10)),
-            right: Box::new(Expression::Value(2)),
-        }),
-        5
-    )
+fn main() {
+    let mut race = CarRace::new("Monaco Grand Prix");
+    race.add_lap(70);
+    race.add_lap(68);
+    race.print_laps();
+    race.add_lap(71);
+    race.print_laps();
+    race.finish();
+    // race.add_lap(42);
 }
