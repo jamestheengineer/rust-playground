@@ -1,24 +1,26 @@
-trait Pet {
-    fn talk(&self) -> String;
+trait Animal {
+    fn leg_count(&self) -> u32;
+}
 
-    fn greet(&self) {
-        println!("Oh you're a cutie! What's your name? {}", self.talk());
+trait Pet: Animal {
+    fn name(&self) -> String;
+}
+
+struct Dog(String);
+
+impl Animal for Dog {
+    fn leg_count(&self) -> u32 {
+        4
     }
 }
 
-struct Dog {
-    name: String,
-    age: i8,
-}
-
 impl Pet for Dog {
-    fn talk(&self) -> String {
-        format!("Woof, my name is {}!", self.name)
+    fn name(&self) -> String {
+        self.0.clone()
     }
 }
 
 fn main() {
-    let fido = Dog { name: String::from("Fido"), age: 5 };
-    dbg!(fido.talk());
-    fido.greet();
+    let puppy = Dog(String::from("Rex"));
+    println!("{} has {} legs", puppy.name(), puppy.leg_count());
 }
