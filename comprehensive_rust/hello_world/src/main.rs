@@ -1,20 +1,14 @@
-#[derive(Debug)]
-struct Meters(i32);
-#[derive(Debug)]
-struct MetersSquared(i32);
-
-trait Multiply {
-    type Output;
-    fn multiply(&self, other: &Self) -> Self::Output;
-}
-
-impl Multiply for Meters {
-    type Output = MetersSquared;
-    fn multiply(&self, other: &Self) -> Self::Output {
-        MetersSquared(self.0 * other.0)
-    }
+#[derive(Debug, Clone, Default)]
+struct Player {
+    name: String,
+    strength: u8,
+    hit_points: u8,
 }
 
 fn main() {
-    println!("{:?}", Meters(10).multiply(&Meters(20)));
+    let p1 = Player::default(); // Default trait adds `default` constructor.
+    let mut p2 = p1.clone(); // Clone trait adds `clone` method.
+    p2.name = String::from("EldurScrollz");
+    // Debug trait adds support for printing with `{:?}`.
+    println!("{p1:?} vs. {p2:?}");
 }
