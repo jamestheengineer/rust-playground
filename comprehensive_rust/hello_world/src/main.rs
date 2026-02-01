@@ -1,14 +1,32 @@
-#[derive(Debug, Clone, Default)]
-struct Player {
-    name: String,
-    strength: u8,
-    hit_points: u8,
+trait Logger {
+    /// Log a message at the given verbosity level.
+    fn log(&self, verbosity: u8, message: &str);
+}
+
+struct StderrLogger;
+
+impl Logger for StderrLogger {
+    fn log(&self, verbosity: u8, message: &str) {
+        eprintln!("verbosity={verbosity}: {message}");
+    }
+}
+
+/// Only log messages up to the given verbosity level.
+struct VerbosityFilter {
+    max_verbosity: u8,
+    inner: StderrLogger,
+}
+
+impl Logger for VerbosityFilter {
+    fn log(&self, verbosity: u8, message: &str) {
+        if verbosity <= self.max_verbosity {
+            self.inner.log(verbosity, message);
+        }
+    }
 }
 
 fn main() {
-    let p1 = Player::default(); // Default trait adds `default` constructor.
-    let mut p2 = p1.clone(); // Clone trait adds `clone` method.
-    p2.name = String::from("EldurScrollz");
-    // Debug trait adds support for printing with `{:?}`.
-    println!("{p1:?} vs. {p2:?}");
+    let logger = VerbosityFilter { max_verbosity: 3, inner: StderrLogger };
+    logger.log(5, "FYI");
+    logger.log(2, "Uhoh");
 }
