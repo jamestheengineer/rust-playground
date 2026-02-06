@@ -1,21 +1,18 @@
-#[derive(Debug)]
-struct Foo(String);
-
-impl From<u32> for Foo {
-    fn from(from: u32) -> Foo {
-        Foo(format!("Converted from integer: {from}"))
-    }
+// Syntactic sugar for:
+//   fn add_42_millions<T: Into<i32>>(x: T) -> i32 {
+fn add_42_millions(x: impl Into<i32>) -> i32 {
+    x.into() + 42_000_000
 }
 
-impl From<bool> for Foo {
-    fn from(from: bool) -> Foo {
-        Foo(format!("Converted from bool: {from}"))
-    }
+fn pair_of(x: u32) -> impl std::fmt::Debug {
+    (x + 1, x - 1)
 }
 
 fn main() {
-    let from_int = Foo::from(123);
-    let from_bool = Foo::from(true);
-    dbg!(from_int);
-    dbg!(from_bool);
+    let many = add_42_millions(42_i8);
+    dbg!(many);
+    let many_more = add_42_millions(10_000_000);
+    dbg!(many_more);
+    let debuggable = pair_of(27);
+    dbg!(debuggable);
 }
