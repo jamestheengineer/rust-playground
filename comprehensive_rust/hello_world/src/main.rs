@@ -1,32 +1,21 @@
-pub trait Logger {
-    /// Log a message at the given verbosity level.
-    fn log(&self, verbosity: u8, message: &str);
-}
+#[derive(Debug)]
+struct Foo(String);
 
-struct StderrLogger;
-
-impl Logger for StderrLogger {
-    fn log(&self, verbosity: u8, message: &str) {
-        eprintln!("verbosity={verbosity}: {message}");
+impl From<u32> for Foo {
+    fn from(from: u32) -> Foo {
+        Foo(format!("Converted from integer: {from}"))
     }
 }
 
-/// Only log messages up to the given verbosity level.
-struct VerbosityFilter<L> {
-    max_verbosity: u8,
-    inner: L,
-}
-
-impl<L: Logger> Logger for VerbosityFilter<L> {
-    fn log(&self, verbosity: u8, message: &str) {
-        if verbosity <= self.max_verbosity {
-            self.inner.log(verbosity, message);
-        }
+impl From<bool> for Foo {
+    fn from(from: bool) -> Foo {
+        Foo(format!("Converted from bool: {from}"))
     }
 }
 
 fn main() {
-    let logger = VerbosityFilter { max_verbosity: 3, inner: StderrLogger };
-    logger.log(5, "FYI");
-    logger.log(2, "Uhoh");
+    let from_int = Foo::from(123);
+    let from_bool = Foo::from(true);
+    dbg!(from_int);
+    dbg!(from_bool);
 }
