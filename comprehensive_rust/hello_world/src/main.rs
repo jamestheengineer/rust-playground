@@ -1,18 +1,44 @@
-// Syntactic sugar for:
-//   fn add_42_millions<T: Into<i32>>(x: T) -> i32 {
-fn add_42_millions(x: impl Into<i32>) -> i32 {
-    x.into() + 42_000_000
+struct Dog {
+    name: String,
+    age: i8,
+}
+struct Cat {
+    lives: i8,
 }
 
-fn pair_of(x: u32) -> impl std::fmt::Debug {
-    (x + 1, x - 1)
+trait Pet {
+    fn talk(&self) -> String;
+}
+
+impl Pet for Dog {
+    fn talk(&self) -> String {
+        format!("Woof, my name is {}!", self.name)
+    }
+}
+
+impl Pet for Cat {
+    fn talk(&self) -> String {
+        String::from("Miau!")
+    }
+}
+
+// Uses generics and static dispatch.
+fn generic(pet: &impl Pet) {
+    println!("Hello, who are you? {}", pet.talk());
+}
+
+// Uses type-erasure and dynamic dispatch.
+fn dynamic(pet: &dyn Pet) {
+    println!("Hello, who are you? {}", pet.talk());
 }
 
 fn main() {
-    let many = add_42_millions(42_i8);
-    dbg!(many);
-    let many_more = add_42_millions(10_000_000);
-    dbg!(many_more);
-    let debuggable = pair_of(27);
-    dbg!(debuggable);
+    let cat = Cat { lives: 9 };
+    let dog = Dog { name: String::from("Fido"), age: 5 };
+
+    generic(&cat);
+    generic(&dog);
+
+    dynamic(&cat);
+    dynamic(&dog);
 }
