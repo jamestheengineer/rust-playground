@@ -1,44 +1,26 @@
-struct Dog {
-    name: String,
-    age: i8,
-}
-struct Cat {
-    lives: i8,
-}
+use std::cmp::Ordering;
 
-trait Pet {
-    fn talk(&self) -> String;
-}
-
-impl Pet for Dog {
-    fn talk(&self) -> String {
-        format!("Woof, my name is {}!", self.name)
+fn min<T: Ord>(l: T, r: T) -> T {
+    match l.cmp(&r) {
+        Ordering::Less | Ordering::Equal => l,
+        Ordering::Greater => r,
     }
 }
 
-impl Pet for Cat {
-    fn talk(&self) -> String {
-        String::from("Miau!")
-    }
+#[test]
+fn integers() {
+    assert_eq!(min(0, 10), 0);
+    assert_eq!(min(500, 123), 123);
 }
 
-// Uses generics and static dispatch.
-fn generic(pet: &impl Pet) {
-    println!("Hello, who are you? {}", pet.talk());
+#[test]
+fn chars() {
+    assert_eq!(min('a', 'z'), 'a');
+    assert_eq!(min('7', '1'), '1');
 }
 
-// Uses type-erasure and dynamic dispatch.
-fn dynamic(pet: &dyn Pet) {
-    println!("Hello, who are you? {}", pet.talk());
-}
-
-fn main() {
-    let cat = Cat { lives: 9 };
-    let dog = Dog { name: String::from("Fido"), age: 5 };
-
-    generic(&cat);
-    generic(&dog);
-
-    dynamic(&cat);
-    dynamic(&dog);
+#[test]
+fn strings() {
+    assert_eq!(min("hello", "goodbye"), "goodbye");
+    assert_eq!(min("bat", "armadillo"), "armadillo");
 }
