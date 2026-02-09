@@ -1,26 +1,9 @@
-use std::cmp::Ordering;
+fn main() {
+    // Argument and return type can be inferred for lightweight syntax:
+    let double_it = |n| n * 2;
+    dbg!(double_it(50));
 
-fn min<T: Ord>(l: T, r: T) -> T {
-    match l.cmp(&r) {
-        Ordering::Less | Ordering::Equal => l,
-        Ordering::Greater => r,
-    }
-}
-
-#[test]
-fn integers() {
-    assert_eq!(min(0, 10), 0);
-    assert_eq!(min(500, 123), 123);
-}
-
-#[test]
-fn chars() {
-    assert_eq!(min('a', 'z'), 'a');
-    assert_eq!(min('7', '1'), '1');
-}
-
-#[test]
-fn strings() {
-    assert_eq!(min("hello", "goodbye"), "goodbye");
-    assert_eq!(min("bat", "armadillo"), "armadillo");
+    // Or we can specify types and bracket the body to be fully explicit:
+    let add_1f32 = |x: f32| -> f32 { x + 1.0 };
+    dbg!(add_1f32(50.));
 }
