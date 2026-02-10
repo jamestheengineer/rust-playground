@@ -1,9 +1,13 @@
 fn main() {
-    // Argument and return type can be inferred for lightweight syntax:
-    let double_it = |n| n * 2;
-    dbg!(double_it(50));
+    let mut max_value = 5;
+    max_value += 1;
+    let clamp = |v| {
+        if v > max_value { max_value } else { v }
+    };
 
-    // Or we can specify types and bracket the body to be fully explicit:
-    let add_1f32 = |x: f32| -> f32 { x + 1.0 };
-    dbg!(add_1f32(50.));
+    dbg!(clamp(1));
+    dbg!(clamp(3));
+    dbg!(clamp(5));
+    dbg!(clamp(7));
+    dbg!(clamp(10));
 }
