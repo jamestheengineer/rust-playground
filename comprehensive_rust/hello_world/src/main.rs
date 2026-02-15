@@ -1,9 +1,19 @@
+use std::fs::File;
+use std::io::Read;
+
 fn main() {
-    let name = "Löwe 老虎 Léopard Gepardi";
-    let mut position: Option<usize> = name.find('é');
-    dbg!(position);
-    assert_eq!(position.unwrap(), 14);
-    position = name.find('Z');
-    dbg!(position);
-    assert_eq!(position.expect("Character not found"), 0);
+    let file: Result<File, std::io::Error> = File::open("diary.txt");
+    match file {
+        Ok(mut file) => {
+            let mut contents = String::new();
+            if let Ok(bytes) = file.read_to_string(&mut contents) {
+                println!("Dear diary: {contents} ({bytes} bytes)");
+            } else {
+                println!("Could not read file content");
+            }
+        }
+        Err(err) => {
+            println!("The diary could not be opened: {err}");
+        }
+    }
 }
