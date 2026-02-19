@@ -29,5 +29,11 @@ fn main() {
         *page_count += 1;
     }
 
+    let pc1 = page_counts
+        .get("Harry Potter and the Sorcerer's Stone")
+        .unwrap_or(&336);
+    let pc2 = page_counts.entry("The Hunger Games").or_insert(374);
+
     dbg!(page_counts);
+    
 }
