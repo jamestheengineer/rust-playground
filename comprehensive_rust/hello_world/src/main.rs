@@ -3,37 +3,50 @@
 
 use std::collections::HashMap;
 
-fn main() {
-    let mut page_counts = HashMap::new();
-    page_counts.insert("Adventures of Huckleberry Finn", 207);
-    page_counts.insert("Grimms' Fairy Tales", 751);
-    page_counts.insert("Pride and Prejudice", 303);
+/// Counter counts the number of times each value of type T has been seen.
+struct Counter {
+    values: HashMap<u32, u64>,
+}
 
-    if !page_counts.contains_key("Les Misérables") {
-        println!(
-            "We know about {} books, but not Les Misérables.",
-            page_counts.len()
-        );
-    }
-
-    for book in ["Pride and Prejudice", "Alice's Adventure in Wonderland"] {
-        match page_counts.get(book) {
-            Some(count) => println!("{book}: {count} pages"),
-            None => println!("{book} is unknown."),
+impl Counter {
+    /// Create a new Counter.
+    fn new() -> Self {
+        Counter {
+            values: HashMap::new(),
         }
     }
 
-    // Use the .entry() method to insert a value if nothing is found.
-    for book in ["Pride and Prejudice", "Alice's Adventure in Wonderland"] {
-        let page_count: &mut i32 = page_counts.entry(book).or_insert(0);
-        *page_count += 1;
+    /// Count an occurrence of the given value.
+    fn count(&mut self, value: u32) {
+        if self.values.contains_key(&value) {
+            *self.values.get_mut(&value).unwrap() += 1;
+        } else {
+            self.values.insert(value, 1);
+        }
     }
 
-    let pc1 = page_counts
-        .get("Harry Potter and the Sorcerer's Stone")
-        .unwrap_or(&336);
-    let pc2 = page_counts.entry("The Hunger Games").or_insert(374);
+    /// Return the number of times the given value has been seen.
+    fn times_seen(&self, value: u32) -> u64 {
+        self.values.get(&value).copied().unwrap_or_default()
+    }
+}
 
-    dbg!(page_counts);
-    
+fn main() {
+    let mut ctr = Counter::new();
+    ctr.count(13);
+    ctr.count(14);
+    ctr.count(16);
+    ctr.count(14);
+    ctr.count(14);
+    ctr.count(11);
+
+    for i in 10..20 {
+        println!("saw {} values equal to {}", ctr.times_seen(i), i);
+    }
+
+    /*let mut strctr = Counter::new();
+    strctr.count("apple");
+    strctr.count("orange");
+    strctr.count("apple");
+    println!("got {} apples", strctr.times_seen("apple"));*/
 }
