@@ -1,30 +1,50 @@
 // Copyright 2023 Google LLC
 // SPDX-License-Identifier: Apache-2.0
 
-#[derive(Debug, Default)]
-struct Derived {
-    x: u32,
-    y: String,
-    z: Implemented,
+use std::io::Read;
+
+struct RotDecoder<R: Read> {
+    input: R,
+    rot: u8,
 }
 
-#[derive(Debug)]
-struct Implemented(String);
-
-impl Default for Implemented {
-    fn default() -> Self {
-        Self("John Smith".into())
+impl<R: Read> Read for RotDecoder<R> {
+    fn read(&mut self, buf: &mut [u8]) -> std::io::Result<usize> {
+        let size = self.input.read(buf)?;
+        for b in &mut buf[..size] {
+            if b.is_ascii_alphabetic() {
+                let base = if b.is_ascii_uppercase() { 'A' } else { 'a' } as u8;
+                *b = (*b - base + self.rot) % 26 + base;
+            }
+        }
+        Ok(size)
     }
 }
 
-fn main() {
-    let default_struct = Derived::default();
-    dbg!(default_struct);
+#[cfg(test)]
+mod test {
+    use super::*;
 
-    let almost_default_struct =
-        Derived { y: "Y is set!".into(), ..Derived::default() };
-    dbg!(almost_default_struct);
+    #[test]
+    fn joke() {
+        let mut rot =
+            RotDecoder { input: "Gb trg gb gur bgure fvqr!".as_bytes(), rot: 13 };
+        let mut result = String::new();
+        rot.read_to_string(&mut result).unwrap();
+        assert_eq!(&result, "To get to the other side!");
+    }
 
-    let nothing: Option<Derived> = None;
-    dbg!(nothing.unwrap_or_default());
+    #[test]
+    fn binary() {
+        let input: Vec<u8> = (0..=255u8).collect();
+        let mut rot = RotDecoder::<&[u8]> { input: input.as_slice(), rot: 13 };
+        let mut buf = [0u8; 256];
+        assert_eq!(rot.read(&mut buf).unwrap(), 256);
+        for i in 0..=255 {
+            if input[i] != buf[i] {
+                assert!(input[i].is_ascii_alphabetic());
+                assert!(buf[i].is_ascii_alphabetic());
+            }
+        }
+    }
 }
