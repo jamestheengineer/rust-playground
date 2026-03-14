@@ -1,16 +1,9 @@
-// Copyright 2023 Google LLC
+// Copyright 2024 Google LLC
 // SPDX-License-Identifier: Apache-2.0
 
-#[derive(Debug)]
-struct Point(i32, i32);
-
-fn add(p1: &Point, p2: &Point) -> Point {
-    Point(p1.0 + p2.0, p1.1 + p2.1)
-}
-
 fn main() {
-    let p1 = Point(3, 4);
-    let p2 = Point(10, 20);
-    let p3 = add(&p1, &p2);
-    println!("{p1:?} + {p2:?} = {p3:?}");
+    let mut vec = vec![1, 2, 3, 4, 5];
+    for elem in &vec {
+        vec.push(elem * 2);
+    }
 }
