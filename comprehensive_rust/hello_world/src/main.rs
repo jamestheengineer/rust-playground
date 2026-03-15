@@ -1,9 +1,12 @@
-// Copyright 2024 Google LLC
+// Copyright 2025 Google LLC
 // SPDX-License-Identifier: Apache-2.0
 
+use std::cell::Cell;
+
 fn main() {
-    let mut vec = vec![1, 2, 3, 4, 5];
-    for elem in &vec {
-        vec.push(elem * 2);
-    }
+    // Note that `cell` is NOT declared as mutable.
+    let cell = Cell::new(5);
+
+    cell.set(123);
+    dbg!(cell.get());
 }
