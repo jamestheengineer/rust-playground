@@ -1,12 +1,20 @@
 // Copyright 2025 Google LLC
 // SPDX-License-Identifier: Apache-2.0
 
-use std::cell::Cell;
+use std::cell::RefCell;
 
 fn main() {
     // Note that `cell` is NOT declared as mutable.
-    let cell = Cell::new(5);
+    let cell = RefCell::new(5);
 
-    cell.set(123);
-    dbg!(cell.get());
+    {
+        let mut cell_ref = cell.borrow_mut();
+        *cell_ref = 123;
+
+        // This triggers an error at runtime.
+        // let other = cell.borrow();
+        // println!("{}", other);
+    }
+
+    println!("{cell:?}");
 }
