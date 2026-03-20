@@ -1,16 +1,16 @@
 // Copyright 2025 Google LLC
 // SPDX-License-Identifier: Apache-2.0
 
-fn borrows(x: &i32) {
-    dbg!(x);
+fn identity(x: &i32) -> &i32 {
+    x
 }
 
 fn main() {
-    let mut val = 123;
+    let mut x = 123;
 
-    // Borrow `val` for the function call.
-    borrows(&val);
+    let out = identity(&x);
 
-    // Borrow has ended and we're free to mutate.
-    val += 5;
+    // x = 5; // 🛠️❌ `x` is still borrowed!
+
+    dbg!(out);
 }
