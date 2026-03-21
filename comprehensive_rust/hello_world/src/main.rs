@@ -1,16 +1,20 @@
 // Copyright 2025 Google LLC
 // SPDX-License-Identifier: Apache-2.0
 
-fn identity(x: &i32) -> &i32 {
-    x
+fn multiple(a: &i32, b: &i32) -> &i32 {
+    todo!("Return either `a` or `b`")
 }
 
 fn main() {
-    let mut x = 123;
+    let mut a = 5;
+    let mut b = 10;
 
-    let out = identity(&x);
+    let r = multiple(&a, &b);
 
-    // x = 5; // 🛠️❌ `x` is still borrowed!
+    // Which one is still borrowed?
+    // Should either mutation be allowed?
+    a += 7;
+    b += 7;
 
-    dbg!(out);
+    dbg!(r);
 }
