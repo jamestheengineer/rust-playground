@@ -1,76 +1,35 @@
-struct Grid {
-    x_coords: Vec<u32>,
-    y_coords: Vec<u32>,
+// Copyright 2023 Google LLC
+// SPDX-License-Identifier: Apache-2.0
+
+/// Calculate the differences between elements of `values` offset by `offset`,
+/// wrapping around from the end of `values` to the beginning.
+///
+/// Element `n` of the result is `values[(n+offset)%len] - values[n]`.
+fn offset_differences(offset: usize, values: Vec<i32>) -> Vec<i32> {
+    let a = values.iter();
+    let b = values.iter().cycle().skip(offset);
+    a.zip(b).map(|(a, b)| *b - *a).collect()
 }
 
-impl IntoIterator for Grid {
-    type Item = (u32, u32);
-    type IntoIter = GridIter;
-    fn into_iter(self) -> GridIter {
-        GridIter { grid: self, i: 0, j: 0 }
-    }
+#[test]
+fn test_offset_one() {
+    assert_eq!(offset_differences(1, vec![1, 3, 5, 7]), vec![2, 2, 2, -6]);
+    assert_eq!(offset_differences(1, vec![1, 3, 5]), vec![2, 2, -4]);
+    assert_eq!(offset_differences(1, vec![1, 3]), vec![2, -2]);
 }
 
-impl<'a> IntoIterator for &'a Grid {
-    type Item = (u32, u32);
-    type IntoIter = GridRefIter<'a>;
-    fn into_iter(self) -> GridRefIter<'a> {
-        GridRefIter { grid: self, i: 0, j: 0 }
-    }
+#[test]
+fn test_larger_offsets() {
+    assert_eq!(offset_differences(2, vec![1, 3, 5, 7]), vec![4, 4, -4, -4]);
+    assert_eq!(offset_differences(3, vec![1, 3, 5, 7]), vec![6, -2, -2, -2]);
+    assert_eq!(offset_differences(4, vec![1, 3, 5, 7]), vec![0, 0, 0, 0]);
+    assert_eq!(offset_differences(5, vec![1, 3, 5, 7]), vec![2, 2, 2, -6]);
 }
 
-struct GridRefIter<'a> {
-    grid: &'a Grid,
-    i: usize,
-    j: usize,
-}
-
-impl<'a> Iterator for GridRefIter<'a> {
-    type Item = (u32, u32);
-
-    fn next(&mut self) -> Option<(u32, u32)> {
-        if self.i >= self.grid.x_coords.len() {
-            self.i = 0;
-            self.j += 1;
-            if self.j >= self.grid.y_coords.len() {
-                return None;
-            }
-        }
-        let res = Some((self.grid.x_coords[self.i], self.grid.y_coords[self.j]));
-        self.i += 1;
-        res
-    }
-}
-
-struct GridIter {
-    grid: Grid,
-    i: usize,
-    j: usize,
-}
-
-impl Iterator for GridIter {
-    type Item = (u32, u32);
-
-    fn next(&mut self) -> Option<(u32, u32)> {
-        if self.i >= self.grid.x_coords.len() {
-            self.i = 0;
-            self.j += 1;
-            if self.j >= self.grid.y_coords.len() {
-                return None;
-            }
-        }
-        let res = Some((self.grid.x_coords[self.i], self.grid.y_coords[self.j]));
-        self.i += 1;
-        res
-    }
-}
-
-fn main() {
-    let grid = Grid { x_coords: vec![3, 5, 7, 9], y_coords: vec![10, 20, 30, 40] };
-    for (x, y) in &grid {
-        println!("point = {x}, {y}");
-    }
-    for (x, y) in grid {
-        println!("point = {x}, {y}");
-    }
+#[test]
+fn test_degenerate_cases() {
+    assert_eq!(offset_differences(1, vec![0]), vec![0]);
+    assert_eq!(offset_differences(1, vec![1]), vec![0]);
+    let empty: Vec<i32> = vec![];
+    assert_eq!(offset_differences(1, empty), vec![]);
 }
