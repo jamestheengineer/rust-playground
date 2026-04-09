@@ -1,19 +1,27 @@
-// Copyright 2023 Google LLC
+// Copyright 2022 Google LLC
 // SPDX-License-Identifier: Apache-2.0
 
-mod foo {
-    pub fn do_something() {
-        println!("In the foo module");
+mod outer {
+    fn private() {
+        println!("outer::private");
     }
-}
 
-mod bar {
-    pub fn do_something() {
-        println!("In the bar module");
+    pub fn public() {
+        println!("outer::public");
+    }
+
+    mod inner {
+        fn private() {
+            println!("outer::inner::private");
+        }
+
+        pub fn public() {
+            println!("outer::inner::public");
+            super::private();
+        }
     }
 }
 
 fn main() {
-    foo::do_something();
-    bar::do_something();
+    outer::public();
 }
