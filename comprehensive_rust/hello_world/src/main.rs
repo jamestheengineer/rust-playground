@@ -1,10 +1,11 @@
-/// Shortens a string to the given length.
-///
-/// ```
-/// # use playground::shorten_string;
-/// assert_eq!(shorten_string("Hello World", 5), "Hello");
-/// assert_eq!(shorten_string("Hello World", 20), "Hello World");
-/// ```
-pub fn shorten_string(s: &str, length: usize) -> &str {
-    &s[..std::cmp::min(length, s.len())]
+// Copyright 2023 Google LLC
+// SPDX-License-Identifier: Apache-2.0
+
+#[deny(clippy::cast_possible_truncation)]
+fn main() {
+    let mut x = 3;
+    while (x < 70000) {
+        x *= 2;
+    }
+    println!("X probably fits in a u16, right? {}", x as u16);
 }
