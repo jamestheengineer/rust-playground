@@ -1,20 +1,44 @@
 // Copyright 2023 Google LLC
 // SPDX-License-Identifier: Apache-2.0
 
+use std::error::Error;
 use std::io::Read;
-use std::{fs, io};
+use std::{fmt, fs, io};
 
-fn read_username(path: &str) -> Result<String, io::Error> {
-    let username_file_result = fs::File::open(path);
-    let mut username_file = username_file_result ?;
+#[derive(Debug)]
+enum ReadUsernameError {
+    IoError(io::Error),
+    EmptyUsername(String),
+}
 
-    let mut username = String::new();
-    username_file.read_to_string(&mut username)?;
+impl Error for ReadUsernameError {}
+
+impl fmt::Display for ReadUsernameError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Self::IoError(e) => write!(f, "I/O error: {e}"),
+            Self::EmptyUsername(path) => write!(f, "Found no username in {path}"),
+        }
+    }
+}
+
+impl From<io::Error> for ReadUsernameError {
+    fn from(err: io::Error) -> Self {
+        Self::IoError(err)
+    }
+}
+
+fn read_username(path: &str) -> Result<String, ReadUsernameError> {
+    let mut username = String::with_capacity(100);
+    fs::File::open(path)?.read_to_string(&mut username)?;
+    if username.is_empty() {
+        return Err(ReadUsernameError::EmptyUsername(String::from(path)));
+    }
     Ok(username)
 }
 
 fn main() {
-    //fs::write("config.dat", "alice").unwrap();
+    //std::fs::write("config.dat", "").unwrap();
     let username = read_username("config.dat");
     println!("username or error: {username:?}");
 }
