@@ -1,21 +1,31 @@
-// Copyright 2023 Google LLC
+// Copyright 2024 Google LLC
 // SPDX-License-Identifier: Apache-2.0
 
-use std::error::Error;
-use std::fs;
 use std::io::Read;
+use std::{fs, io};
+use thiserror::Error;
 
-fn read_count(path: &str) -> Result<i32, Box<dyn Error>> {
-    let mut count_str = String::new();
-    fs::File::open(path)?.read_to_string(&mut count_str)?;
-    let count: i32 = count_str.parse()?;
-    Ok(count)
+#[derive(Debug, Error)]
+enum ReadUsernameError {
+    #[error("I/O error: {0}")]
+    IoError(#[from] io::Error),
+    #[error("Found no username in {0}")]
+    EmptyUsername(String),
+}
+
+fn read_username(path: &str) -> Result<String, ReadUsernameError> {
+    let mut username = String::with_capacity(100);
+    fs::File::open(path)?.read_to_string(&mut username)?;
+    if username.is_empty() {
+        return Err(ReadUsernameError::EmptyUsername(String::from(path)));
+    }
+    Ok(username)
 }
 
 fn main() {
-    fs::write("count.dat", "1i3").unwrap();
-    match read_count("count.dat") {
-        Ok(count) => println!("Count: {count}"),
+    //fs::write("config.dat", "").unwrap();
+    match read_username("config.dat") {
+        Ok(username) => println!("Username: {username}"),
         Err(err) => println!("Error: {err}"),
     }
 }
