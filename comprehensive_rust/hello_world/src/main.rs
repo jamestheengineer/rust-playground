@@ -1,73 +1,34 @@
 // Copyright 2023 Google LLC
 // SPDX-License-Identifier: Apache-2.0
 
-/// An operation to perform on two subexpressions.
-#[derive(Debug)]
-enum Operation {
-    Add,
-    Sub,
-    Mul,
-    Div,
-}
+fn main() {
+    let mut x = 10;
 
-/// An expression, in tree form.
-#[derive(Debug)]
-enum Expression {
-    /// An operation on two subexpressions.
-    Op { op: Operation, left: Box<Expression>, right: Box<Expression> },
+    let p1: *mut i32 = &raw mut x;
+    let p2 = p1 as *const i32;
 
-    /// A literal value
-    Value(i64),
-}
-
-#[derive(PartialEq, Eq, Debug)]
-struct DivideByZeroError;
-
-fn eval(e: Expression) -> Result<i64, DivideByZeroError> {
-    match e {
-        Expression::Op { op, left, right } => {
-            let left = eval(*left)?;
-            let right = eval(*right)?;
-            Ok(match op {
-                Operation::Add => left + right,
-                Operation::Sub => left - right,
-                Operation::Mul => left * right,
-                Operation::Div => {
-                    if right == 0 {
-                        return Err(DivideByZeroError);
-                    } else {
-                        left / right
-                    }
-                }
-            })
-        }
-        Expression::Value(v) => Ok(v),
-    }
-}
-
-#[cfg(test)]
-mod test {
-    use super::*;
-
-    #[test]
-    fn test_error() {
-        assert_eq!(
-            eval(Expression::Op {
-                op: Operation::Div,
-                left: Box::new(Expression::Value(99)),
-                right: Box::new(Expression::Value(0)),
-            }),
-            Err(DivideByZeroError)
-        );
+    // SAFETY: p1 and p2 were created by taking raw pointers to a local, so they
+    // are guaranteed to be non-null, aligned, and point into a single (stack-)
+    // allocated object.
+    //
+    // The object underlying the raw pointers lives for the entire function, so
+    // it is not deallocated while the raw pointers still exist. It is not
+    // accessed through references while the raw pointers exist, nor is it
+    // accessed from other threads concurrently.
+    unsafe {
+        dbg!(*p1);
+        *p1 = 6;
+        // Mutation may soundly be observed through a raw pointer, like in C.
+        dbg!(*p2);
     }
 
-    #[test]
-    fn test_ok() {
-        let expr = Expression::Op {
-            op: Operation::Sub,
-            left: Box::new(Expression::Value(20)),
-            right: Box::new(Expression::Value(10)),
-        };
-        assert_eq!(eval(expr), Ok(10));
-    }
+    println!("Did x change? I'm {x}, so {}.", x!= 10);
+
+    // UNSOUND. DO NOT DO THIS.
+    /*
+    let r: &i32 = unsafe { &*p1 };
+    dbg!(r);
+    x = 50;
+    dbg!(r); // Object underlying the reference has been mutated. This is UB.
+    */
 }
