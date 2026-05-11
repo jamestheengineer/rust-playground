@@ -1,34 +1,20 @@
 // Copyright 2023 Google LLC
 // SPDX-License-Identifier: Apache-2.0
 
-fn main() {
-    let mut x = 10;
+static mut COUNTER: u32 = 0;
 
-    let p1: *mut i32 = &raw mut x;
-    let p2 = p1 as *const i32;
-
-    // SAFETY: p1 and p2 were created by taking raw pointers to a local, so they
-    // are guaranteed to be non-null, aligned, and point into a single (stack-)
-    // allocated object.
-    //
-    // The object underlying the raw pointers lives for the entire function, so
-    // it is not deallocated while the raw pointers still exist. It is not
-    // accessed through references while the raw pointers exist, nor is it
-    // accessed from other threads concurrently.
+fn add_to_counter(inc: u32) {
+    // SAFETY: There are no other threads which could be accessing `COUNTER`.
     unsafe {
-        dbg!(*p1);
-        *p1 = 6;
-        // Mutation may soundly be observed through a raw pointer, like in C.
-        dbg!(*p2);
+        COUNTER += inc;
     }
+}
 
-    println!("Did x change? I'm {x}, so {}.", x!= 10);
+fn main() {
+    add_to_counter(42);
 
-    // UNSOUND. DO NOT DO THIS.
-    /*
-    let r: &i32 = unsafe { &*p1 };
-    dbg!(r);
-    x = 50;
-    dbg!(r); // Object underlying the reference has been mutated. This is UB.
-    */
+    // SAFETY: There are no other threads which could be accessing `COUNTER`.
+    unsafe {
+        dbg!(COUNTER);
+    }
 }
