@@ -1,20 +1,14 @@
 // Copyright 2023 Google LLC
 // SPDX-License-Identifier: Apache-2.0
 
-static mut COUNTER: u32 = 0;
-
-fn add_to_counter(inc: u32) {
-    // SAFETY: There are no other threads which could be accessing `COUNTER`.
-    unsafe {
-        COUNTER += inc;
-    }
+#[repr(C)]
+union MyUnion {
+    i: u8,
+    b: bool,
 }
 
 fn main() {
-    add_to_counter(42);
-
-    // SAFETY: There are no other threads which could be accessing `COUNTER`.
-    unsafe {
-        dbg!(COUNTER);
-    }
+    let u = MyUnion { i: 42 };
+    println!("int: {}", unsafe { u.i });
+    println!("bool: {}", unsafe { u.b }); // Undefined behavior!
 }
