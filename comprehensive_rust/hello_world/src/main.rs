@@ -1,31 +1,25 @@
 // Copyright 2025 Google LLC
 // SPDX-License-Identifier: Apache-2.0
 
-/// Swaps the values pointed to by the given pointers.
-///
-/// # Safety
-///
-/// The pointers must be valid, properly aligned, and not otherwise accessed for
-/// the duration of the function call.
-unsafe fn swap(a: *mut u8, b: *mut u8) {
-    // SAFETY: Our caller promised that the pointers are valid, properly aligned
-    // and have no other access.
-    unsafe {
-        let temp = *a;
-        *a = *b;
-        *b = temp;
-    }
+use std::ffi::c_char;
+
+unsafe extern "C" {
+    // `abs` doesn't deal with pointers and doesn't have any safety requirements.
+    safe fn abs(input: i32) -> i32;
+
+    /// # Safety
+    ///
+    /// `s` must be a pointer to a NUL-terminated C string which is valid and
+    /// not modified for the duration of this function call.
+    unsafe fn strlen(s: *const c_char) -> usize;
 }
 
 fn main() {
-    let mut a = 42;
-    let mut b = 66;
+    println!("Absolute value of -3 according to C: {}", abs(-3));
 
-    // SAFETY: The pointers must be valid, aligned and unique because they came
-    // from references.
     unsafe {
-        swap(&mut a, &mut b);
+        // SAFETY: We pass a pointer to a C string literal which is valid for
+        // the duration of the program.
+        println!("String length: {}", strlen(c"String".as_ptr()));
     }
-
-    println!("a = {}, b = {}", a, b);
 }
