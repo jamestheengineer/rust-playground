@@ -1,14 +1,31 @@
-// Copyright 2023 Google LLC
+// Copyright 2025 Google LLC
 // SPDX-License-Identifier: Apache-2.0
 
-#[repr(C)]
-union MyUnion {
-    i: u8,
-    b: bool,
+/// Swaps the values pointed to by the given pointers.
+///
+/// # Safety
+///
+/// The pointers must be valid, properly aligned, and not otherwise accessed for
+/// the duration of the function call.
+unsafe fn swap(a: *mut u8, b: *mut u8) {
+    // SAFETY: Our caller promised that the pointers are valid, properly aligned
+    // and have no other access.
+    unsafe {
+        let temp = *a;
+        *a = *b;
+        *b = temp;
+    }
 }
 
 fn main() {
-    let u = MyUnion { i: 42 };
-    println!("int: {}", unsafe { u.i });
-    println!("bool: {}", unsafe { u.b }); // Undefined behavior!
+    let mut a = 42;
+    let mut b = 66;
+
+    // SAFETY: The pointers must be valid, aligned and unique because they came
+    // from references.
+    unsafe {
+        swap(&mut a, &mut b);
+    }
+
+    println!("a = {}, b = {}", a, b);
 }
