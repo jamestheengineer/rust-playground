@@ -1,25 +1,21 @@
 // Copyright 2025 Google LLC
 // SPDX-License-Identifier: Apache-2.0
 
-use std::ffi::c_char;
+#[derive(Debug)]
+#[repr(C)]
+struct KeyPair {
+    pk: [u16; 4], // 8 bytes
+    sk: [u16; 4], // 8 bytes
+}
 
-unsafe extern "C" {
-    // `abs` doesn't deal with pointers and doesn't have any safety requirements.
-    safe fn abs(input: i32) -> i32;
+const PK_BYTE_LEN: usize = 8;
 
-    /// # Safety
-    ///
-    /// `s` must be a pointer to a NUL-terminated C string which is valid and
-    /// not modified for the duration of this function call.
-    unsafe fn strlen(s: *const c_char) -> usize;
+fn log_public_key(pk_ptr: *const u16) {
+    let pk: &[u16] = unsafe { std::slice::from_raw_parts(pk_ptr, PK_BYTE_LEN) };
+    println!("{pk:?}");
 }
 
 fn main() {
-    println!("Absolute value of -3 according to C: {}", abs(-3));
-
-    unsafe {
-        // SAFETY: We pass a pointer to a C string literal which is valid for
-        // the duration of the program.
-        println!("String length: {}", strlen(c"String".as_ptr()));
-    }
+    let key_pair = KeyPair { pk: [1, 2, 3, 4], sk: [0, 0, 42, 0] };
+    log_public_key(key_pair.pk.as_ptr());
 }
