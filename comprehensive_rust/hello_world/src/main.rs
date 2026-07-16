@@ -1,17 +1,18 @@
 // Copyright 2024 Google LLC
 // SPDX-License-Identifier: Apache-2.0
 
-use std::thread;
-
-fn foo() {
-    let s = String::from("Hello");
-    thread::scope(|scope| {
-        scope.spawn(|| {
-            dbg!(s.len());
-        });
-    });
-}
+use std::sync::mpsc;
 
 fn main() {
-    foo();
+    let (tx, rx) = mpsc::channel();
+
+    tx.send(10).unwrap();
+    tx.send(20).unwrap();
+
+    println!("Received: {:?}", rx.recv());
+    println!("Received: {:?}", rx.recv());
+
+    let tx2 = tx.clone();
+    tx2.send(30).unwrap();
+    println!("Received: {:?}", rx.recv());
 }
